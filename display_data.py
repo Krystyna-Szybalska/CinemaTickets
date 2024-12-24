@@ -1,13 +1,9 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, inspect
 from models import Base, Hall, Seat
 
 # Connect to the database
-engine = create_engine('sqlite:///../cinema.db')
+engine = create_engine('sqlite:///cinema.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 

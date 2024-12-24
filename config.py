@@ -1,0 +1,1 @@
+# Configuration settings (e.g., secret keys, DB URL)

@@ -1,4 +1,4 @@
-// app.js
+// scripts.js
 const userForm = document.getElementById('userForm');
 
 userForm.addEventListener('submit', async (e) => {
