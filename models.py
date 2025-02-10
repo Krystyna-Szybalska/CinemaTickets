@@ -13,7 +13,7 @@ class User(Base):
     user_id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))  # Store UUID as string
     name = Column(String(100), nullable=False)
     email = Column(String(100), unique=True, nullable=False)
-    phone = Column(String(15))
+    phone_number = Column(String(15))
     password = Column(String(100), nullable=False)
     is_guest = Column(Boolean, default=False)  # New column added
 
@@ -82,7 +82,6 @@ class ReservedSeat(Base):
     ticket_price = Column(Float, nullable=False)
     reservation = relationship('Reservation', back_populates='reserved_seats')  # Add this
     seat = relationship('Seat', back_populates='reserved_seats')  # Add this
-
 
 
 if __name__ == '__main__':
