@@ -11,8 +11,8 @@ from auth import decode_token, verify_password
 from auth import hash_password
 from database import get_db
 from models import User, Showing, Seat, ReservedSeat, Reservation
-from schemas import ReservationRequest,  ShowingDetailResponse, ShowingResponse, UserResponse, \
-    LoginRequest, RegisterRequest
+from schemas import ReservationRequest, ShowingDetailResponse, ShowingResponse, UserResponse, \
+    LoginRequest, RegisterRequest, SeatResponse
 
 app = FastAPI()
 
@@ -92,6 +92,7 @@ async def get_showings(
             raise HTTPException(status_code=404, detail="No showings found in the given time range")
 
         return [ShowingResponse(
+            showing_id=showing.showing_id,
             movie_title=showing.movie.title,
             showing_date=showing.showing_date,
             hall_id=showing.hall_id,
@@ -123,7 +124,14 @@ async def get_showing_details(showing_id: str, db: Session = Depends(get_db)):
     reserved_seat_ids = [reserved_seat.seat_id for reserved_seat in reserved_seat_ids]
 
     # Filter out the reserved seats from the available seats
-    available_seats = [seat for seat in seats if seat.seat_id not in reserved_seat_ids]
+    available_seats = [
+        SeatResponse(
+            seat_id=seat.seat_id,
+            seat_number=seat.seat_number,
+            row_number=seat.row_number,
+        )
+        for seat in seats if seat.seat_id not in reserved_seat_ids
+    ]
 
     # Return showing details, including available seats
     return ShowingDetailResponse(

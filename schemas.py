@@ -36,9 +36,10 @@ class RegisterRequest(BaseModel):
 
 
 class ShowingResponse(BaseModel):
+    showing_id: str
     movie_title: str
     showing_date: datetime
-    hall_id: int
+    hall_id: str
     hall_name: str
 
 
