@@ -5,6 +5,7 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi import Header
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from auth import decode_token, verify_password
@@ -15,6 +16,19 @@ from schemas import ReservationRequest, ShowingDetailResponse, ShowingResponse, 
     LoginRequest, RegisterRequest, SeatResponse
 
 app = FastAPI()
+
+origins = [
+    "https://localhost:3000",
+    "https://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Set up templates and static files
 templates = Jinja2Templates(directory="templates")
