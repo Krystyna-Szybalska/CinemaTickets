@@ -2,13 +2,12 @@ from datetime import datetime, timedelta
 
 from fastapi import Depends
 from fastapi import FastAPI, Request, HTTPException
-from fastapi import Header
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-from auth import decode_token, verify_password
+from auth import verify_password
 from auth import hash_password
 from database import get_db
 from models import User, Showing, Seat, ReservedSeat, Reservation
@@ -67,24 +66,6 @@ async def login(request: LoginRequest, db: Session = Depends(get_db)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
-
-
-@app.get("/protected")
-async def protected_route(authorization: str = Header(None)):
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
-    token = authorization.split(" ")[1]
-    user_id = decode_token(token)
-    if not user_id:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
-
-    return {"message": "Access granted", "user_id": user_id}
-
-
-@app.get("/")
-async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/showings")

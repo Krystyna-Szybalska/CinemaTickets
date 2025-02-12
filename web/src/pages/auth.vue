@@ -63,14 +63,14 @@
 
             <v-text-field
               v-model="registerFormData.password"
-              label="Password"
+              label="Hasło"
               type="password"
               :rules="[required]"
             />
 
             <v-text-field
               v-model="registerFormData.phoneNumber"
-              label="Number telefonu"
+              label="Numer telefonu"
               type="tel"
               :rules="[required]"
             />
@@ -103,8 +103,8 @@ const registerForm = ref();
 const tab = ref(1);
 
 const loginFormData = reactive({
-  email: 'maciej.romanowski@test.com',
-  password: '12345',
+  email: '',
+  password: '',
 });
 
 const registerFormData = reactive({
