@@ -143,14 +143,16 @@ async def get_showing_details(showing_id: str, db: Session = Depends(get_db)):
             seat_id=seat.seat_id,
             seat_number=seat.seat_number,
             row_number=seat.row_number,
+            is_reserved=seat.seat_id in reserved_seat_ids
         )
-        for seat in seats if seat.seat_id not in reserved_seat_ids
+        for seat in seats
     ]
 
     # Return showing details, including available seats
     return ShowingDetailResponse(
         showing_id=showing.showing_id,
         movie=showing.movie.title,
+        showing_date=showing.showing_date,
         hall_name=hall.name,
         available_seats=available_seats
     )

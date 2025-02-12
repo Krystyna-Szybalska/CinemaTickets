@@ -47,12 +47,14 @@ class SeatResponse(BaseModel):
     seat_id: str
     seat_number: int
     row_number: int
+    is_reserved: bool
 
 
 class ShowingDetailResponse(BaseModel):
     showing_id: str
     movie: str
     hall_name: str
+    showing_date: datetime
     available_seats: list[SeatResponse]
 
 
