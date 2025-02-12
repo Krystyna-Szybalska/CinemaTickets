@@ -1,23 +1,34 @@
 <template>
-  <div
+  <router-link
     class="movie-card"
+    :to="`/showing/${movie.showing_id}`"
   >
     <img
+      v-if="movieImage"
       :src="movieImage"
       width="80"
       height="120"
       alt=""
     >
+
+    <div
+      v-else
+      class="movie-card__image-placeholder"
+    >
+      <v-icon size="x-large">
+        mdi-image-off
+      </v-icon>
+    </div>
+
     <div class="movie-card__content">
-      <h2>{{ movie.movie_title }}</h2>
-      <span>{{ movieDate }}</span>
+      <h2>{{ movieName }}</h2>
+      <span v-if="movieDate">{{ movieDate }}</span>
 
       <div class="mt-auto">
         Sala: {{ movie.hall_name }}
       </div>
-      <!--  -->
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script setup>
@@ -58,16 +69,20 @@ const props = defineProps({
   }
 });
 
-const movieDate = computed(() => {
-  const date = new Date(props.movie.showing_date);
+const movieName = computed(() => {
+  return props.movie?.movie_title ?? props.movie?.movie ?? null;
+})
 
-  return new Intl.DateTimeFormat('pl', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+const movieDate = computed(() => {
+  const showingDate = props.movie?.showing_date;
+  if (!showingDate) { return null; }
+
+  const parsedDate = new Date(showingDate);
+  return new Intl.DateTimeFormat('pl', { dateStyle: 'medium', timeStyle: 'short' }).format(parsedDate);
 })
 
 const movieImage = computed(() => {
-  const movieName = props.movie.movie_title;
-
-  return MOVIE_IMAGES[movieName];
+  return MOVIE_IMAGES[movieName.value];
 });
 </script>
 
@@ -101,6 +116,10 @@ const movieImage = computed(() => {
     --shadow-2: rgba(0, 150, 136, 0.14);
     --shadow-3: rgba(0, 150, 136, 0.12);
     background-color: #f2f2f2;
+
+    & > .movie-card__image-placeholder {
+      background-color: #fff;
+    }
   }
 
   &__content {
@@ -108,10 +127,26 @@ const movieImage = computed(() => {
     display: flex;
     flex-direction: column;
 
+    & > h2 {
+      font-size: 20px;
+    }
+
     & > span {
       color: rgba(0, 0, 0, .6);
       font-size: 14px;
     }
+  }
+
+  &__image-placeholder {
+    border-radius: 10px;
+    width: 80px;
+    min-width: 80px;
+    height: 120px;
+    background-color: #f2f2f2;
+    transition: all ease-in-out 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>
