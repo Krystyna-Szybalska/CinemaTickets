@@ -6,13 +6,13 @@ async function setReservation ({
   seat_ids,
 }) {
   try {
-    const result = await ApiInstance.post('/reserve', {
+    const { data } = await ApiInstance.post('/reserve', {
       showing_id,
       user_id,
       seat_ids,
     })
 
-    return result?.message === "Reservation successful";
+    return data?.message === "Reservation successful";
   } catch (error) {
     console.error(error);
     return false;
