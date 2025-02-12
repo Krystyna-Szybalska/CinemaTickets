@@ -5,7 +5,7 @@
       max-width="800"
     >
       <h1 class="px-5">
-        Repertuar kina na {{ currentDate }}
+        Repertuar kina na najbliższe dni
       </h1>
 
       <common-loader v-if="loading" />
@@ -26,15 +26,11 @@
 
 <script setup>
 import { getShowings } from '@/services/showingService';
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const movies = ref([]);
 
 const loading = ref(false);
-
-const currentDate = computed(() => {
-  return new Intl.DateTimeFormat('pl', { dateStyle: 'medium' }).format(new Date());
-})
 
 onMounted(async () => {
   loading.value = true;

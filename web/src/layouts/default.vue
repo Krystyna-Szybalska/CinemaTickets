@@ -4,7 +4,14 @@
       scroll-behavior="elevate"
       color="teal"
     >
-      <v-app-bar-title>CinemaTickets</v-app-bar-title>
+      <v-app-bar-title>
+        <router-link
+          to="/"
+          class="header-link"
+        >
+          CinemaTickets
+        </router-link>
+      </v-app-bar-title>
 
       <div
         v-if="userIsLoggedIn"
@@ -22,9 +29,9 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 
 const userName = ref('');
 
@@ -37,9 +44,19 @@ onMounted(() => {
     userIsLoggedIn.value = true;
 
     const parsedData = JSON.parse(userData);
-    userName.value = parsedData.name
+    userName.value = parsedData.name;
   } else {
-    router.push('/auth')
+    router.push('/auth');
   }
 });
 </script>
+
+
+<style lang="scss">
+.header-link {
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  font-weight: normal;
+}
+</style>
